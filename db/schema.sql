@@ -28,6 +28,37 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: contestants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.contestants (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    time_created timestamp without time zone DEFAULT now() NOT NULL,
+    time_updated timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: contestants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.contestants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: contestants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.contestants_id_seq OWNED BY public.contestants.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -37,13 +68,45 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: scores; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scores (
+    id bigint NOT NULL,
+    contestant_id integer NOT NULL,
+    user_id integer NOT NULL,
+    time_created timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: scores_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scores_id_seq OWNED BY public.scores.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
     id integer NOT NULL,
     email character varying(255) NOT NULL,
-    time_created timestamp without time zone DEFAULT now() NOT NULL
+    time_created timestamp without time zone DEFAULT now() NOT NULL,
+    time_updated timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -67,10 +130,40 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: contestants id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contestants ALTER COLUMN id SET DEFAULT nextval('public.contestants_id_seq'::regclass);
+
+
+--
+-- Name: scores id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scores ALTER COLUMN id SET DEFAULT nextval('public.scores_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: contestants contestants_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contestants
+    ADD CONSTRAINT contestants_name_key UNIQUE (name);
+
+
+--
+-- Name: contestants contestants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contestants
+    ADD CONSTRAINT contestants_pkey PRIMARY KEY (id);
 
 
 --
@@ -79,6 +172,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: scores scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scores
+    ADD CONSTRAINT scores_pkey PRIMARY KEY (id);
 
 
 --
@@ -107,4 +208,5 @@ ALTER TABLE ONLY public.users
 --
 
 INSERT INTO public.schema_migrations (version) VALUES
-    ('20220215061842');
+    ('20220215061842'),
+    ('20220216050726');

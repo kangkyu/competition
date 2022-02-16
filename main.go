@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -20,19 +19,11 @@ func main() {
 		panic(err)
 	}
 	err = db.Ping()
-	db.MustExec(`TRUNCATE users`)
-	_, err = db.Exec(`INSERT INTO users (email) VALUES ($1)`, "lee@kangkyu.com")
 	if err != nil {
 		panic(err)
 	}
-	rows, err := db.Queryx(`SELECT * FROM users`)
 
-	fmt.Println("Hello world")
-	for rows.Next() {
-		var u User
-		err = rows.StructScan(&u)
-		fmt.Printf("Hello, %v with id %d\n", u.Email, u.ID)
-	}
+	
 
 	db.Close()
 }

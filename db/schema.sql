@@ -199,6 +199,20 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_scores_on_contestant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scores_on_contestant_id ON public.scores USING btree (contestant_id);
+
+
+--
+-- Name: index_scores_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scores_on_user_id ON public.scores USING btree (user_id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -209,4 +223,5 @@ ALTER TABLE ONLY public.users
 
 INSERT INTO public.schema_migrations (version) VALUES
     ('20220215061842'),
-    ('20220216050726');
+    ('20220216050726'),
+    ('20220225064008');

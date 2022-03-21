@@ -28,7 +28,11 @@ func main() {
 		panic(err)
 	}
 
-	err = mypubsub.Publish(os.Stdout, "votes-topic", "Hello!")
+	err = mypubsub.Publish(os.Stdout, "votes-topic", "Hello world!")
+	if err != nil {
+		panic(err)
+	}
+	err = mypubsub.PullMsgs(os.Stdout, "votes-sub")
 	if err != nil {
 		panic(err)
 	}
